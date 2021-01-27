@@ -6,6 +6,7 @@ import { useStore } from 'react-redux';
 import Head from 'next/head';
 import { load, save, wrapper } from '~/store/store';
 // import { AppDispatch } from '~/store/types';
+import Layout from '~/components/layout';
 
 import '../scss/index.scss';
 
@@ -25,7 +26,11 @@ function App(props: Props) {
   const { Component, pageProps } = props;
     // const store = useStore();
 
-  return <Component {...pageProps} />;
+  return (
+      <Layout>
+          <Component {...pageProps} />
+      </Layout>
+  );
 }
 
 App.getInitialProps = async (context: AppContext) => {
