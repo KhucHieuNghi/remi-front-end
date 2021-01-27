@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 // application
 // import version from '~/store/version';
-// import cartReducer, { CART_NAMESPACE } from '~/store/cart/cartReducer';
+import userReducer, { USER_NAMESPACE } from '~/store/user/reducer';
 // import compareReducer, { COMPARE_NAMESPACE } from '~/store/compare/compareReducer';
 // import currencyReducer, { CURRENCY_NAMESPACE } from '~/store/currency/currencyReducer';
 // import garageReducer, { GARAGE_NAMESPACE } from '~/store/garage/garageReducer';
@@ -17,7 +17,7 @@ import { combineReducers } from 'redux';
 
 export default combineReducers({
     version: (state: number = 1) => state,
-    // [CART_NAMESPACE]: cartReducer,
+    [USER_NAMESPACE]: userReducer,
     // [COMPARE_NAMESPACE]: compareReducer,
     // [CURRENCY_NAMESPACE]: currencyReducer,
     // [GARAGE_NAMESPACE]: garageReducer,

@@ -1,13 +1,20 @@
 // third-party
-import thunk from 'redux-thunk';
+// import thunk from 'redux-thunk';
 import { applyMiddleware, createStore, Middleware } from 'redux';
 import { createWrapper, MakeStore } from 'next-redux-wrapper';
+
+import createSagaMiddleware from 'redux-saga';
+
+import rootSaga from './saga';
+
 // application
 import rootReducer from './root/rootReducer';
 import { FirstArgType } from './types';
 import { IRootState } from './root/rootTypes';
 
 const STORAGE_KEY = 'red-parts/react';
+
+const saga = createSagaMiddleware();
 
 export const save = (state: any) => {
     try {
@@ -54,9 +61,12 @@ const bindMiddleware = (...middleware: Middleware[]) => {
     return applyMiddleware(...middleware);
 };
 
-const makeStore: MakeStore<IRootState> = () => (
-    createStore(rootReducer, bindMiddleware(thunk))
-);
+const makeStore: MakeStore<IRootState> = () => {
+    const store = createStore(rootReducer, bindMiddleware(saga));
+    saga.run(rootSaga);
+
+    return store;
+};
 
 export const wrapper = createWrapper<IRootState>(makeStore);
 

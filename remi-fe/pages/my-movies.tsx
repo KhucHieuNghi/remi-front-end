@@ -15,7 +15,6 @@ export default () => {
         <Wrapper>
             <ShareMovie />
             <ShareMovie />
-
         </Wrapper>
     );
 };

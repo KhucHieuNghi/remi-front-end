@@ -25,7 +25,7 @@ export default () => {
     return (
         <Wrapper>
             <section className="form__share">
-                <div className="col-sm-2 col-form-label form__label font-weight-bold h3">Share a Youtube movie</div>
+                <div className="form__label font-weight-bold h4 pl-3 pr-3">Share a Youtube movie</div>
                 <div className="form-group row">
                     <label htmlFor="Title" className="col-sm-2 col-form-label text-left">Title</label>
                     <div className="col-sm-10">
