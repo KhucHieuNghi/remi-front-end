@@ -8,15 +8,18 @@ import {
 } from '~/svg';
 
 const Wrapper = styled.section`    
-    @media screen and (max-width: 970px) {
+    @media (max-width: 992px) {
         flex-wrap: wrap !important;
       }
 
     .movie__yout{
-        width: 640px;
-        height: 390px;
+        width: 100%;
+        height: auto;
+        
         .yout-container{
             display: inline-block;
+            width: 100%;
+            height: 100%;
         }
     }
 
@@ -25,9 +28,11 @@ const Wrapper = styled.section`
             color: #cb3837;
         }
     }
+    
     .vote__container{
 
     }
+
     .vote{
         right: 0;
         &__track{
@@ -69,7 +74,7 @@ export default () => {
                 </div>
                 <div className="info__by-share p-2">
                     <span>
-                        Shared by as@gma.ocm
+                        Shared by <span className="font-weight-bold">as@gma.ocm</span>
                     </span>
                 </div>
                 <div className="info__emotion p-2">

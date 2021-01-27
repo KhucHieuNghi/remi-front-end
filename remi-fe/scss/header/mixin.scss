@@ -1,0 +1,39 @@
+@mixin header__container {
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        margin-top: 10px !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+}
+
+@mixin svg {
+    svg{
+        max-width: 80px;
+        height: auto;
+    }
+}
+
+@mixin title($mobile) {
+    display: flex;
+    align-items: center;
+    
+    &--name{
+        @if $mobile {
+            font-size: 18px;
+        }
+        color: rgb(13, 92, 182);
+    }
+}
+
+@mixin  user-info {
+    align-items: center;
+    display: flex;
+    .dropdown-menu{
+        width: 205px;
+    }
+    .dropdown-toggle{
+        background-color: #0069d9;
+        border-color: #0062cc;
+    }
+    
+}

@@ -1,3 +1,38 @@
+@import './mixin.scss';
+
 .container{
     text-align: center;
+}
+
+.header{
+    .header__container{
+        @include header__container;
+        @include svg;
+    
+        .title{
+            @include title(false);
+        }
+    
+        .user-info{
+            @include user-info;
+        }
+        .header-mobile{
+            display: none;;
+        }
+        .header-pc{
+            display: flex;
+        }
+
+        @media screen and (max-width:800px){
+            .header-pc{
+                display: none;
+            }
+            .header-mobile{
+                display: unset;
+            }
+            .title{
+                @include title(true);
+            }
+          }
+    }
 }

@@ -1,73 +1,126 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import {
+ Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
+} from 'reactstrap';
+import ReactNotification, { store } from 'react-notifications-component';
+import { useLogout, useUser, useLogin } from '~/store/user/hook';
 import { LogoSvg } from '~/svg';
-import { myMovies, share } from '~/url';
+import {
+ myMovies, share, register,
+} from '~/url';
 // interface Props {
 //     children: ReactChildren
 // }
 
-const Header = styled.header`
-    .header__container{
-        border-bottom: 1px solid rgba(0,0,0,.1);
-        margin-top: 0px !important;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        svg{
-            max-width: 80px;
-            height: auto;
-        }
-
-        .title{
-            display: flex;
-            align-items: center;
-            
-            &--name{
-                color: rgb(13, 92, 182);
-            }
-        }
-
-        .user-info{
-            align-items: center;
-            display: flex;
-        }
-    }
-`;
-
 export default () => {
-    console.log();
     const router = useRouter();
+    const user = useUser();
+    const logout = useLogout();
+    const login = useLogin();
 
-    const LoginInfo = () => (
+    const emailRef = useRef<any>(null);
+    const passwordRef = useRef<any>(null);
+
+    const [isPending, setPending] = useState<boolean>(false);
+    const [show, setShow] = useState<boolean>(false);
+
+    useEffect(() => {
+        setPending(false);
+    }, [user]);
+
+    const validate = () => {
+        if (!passwordRef?.current?.value || !emailRef?.current?.value) {
+            store.addNotification({
+                title: 'Login',
+                message: 'Please Input Email or Password',
+                type: 'danger',
+                insert: 'top',
+                container: 'top-right',
+                animationIn: ['animate__animated', 'animate__fadeIn'],
+                animationOut: ['animate__animated', 'animate__fadeOut'],
+                dismiss: {
+                  duration: 1500,
+                  onScreen: true,
+                },
+              });
+              return true;
+        }
+        return false;
+    };
+
+    const submit = () => {
+        setPending(true);
+        if (validate()) {
+            setPending(false);
+            return;
+        }
+        login({
+            password: passwordRef?.current?.value,
+            email: emailRef?.current?.value,
+        });
+    };
+
+    const LoginInfoPC = () => (
         <React.Fragment>
-            <input className="form-control mr-sm-2" type="email" placeholder="Email" />
-            <input className="form-control mr-sm-2" type="password" placeholder="Password" />
-            <button className="btn btn-outline-primary my-2 my-sm-0" type="button">Login/Register</button>
+            <input className="form-control mr-sm-2" type="email" placeholder="Email" disabled={isPending} ref={emailRef} />
+            <input className="form-control mr-sm-2" type="password" placeholder="Password" disabled={isPending} ref={passwordRef} />
+            <button className="btn btn-outline-success my-2 my-sm-0 mr-3" type="button" onClick={submit}>Login</button>
+            <button className="btn btn-outline-primary my-2 my-sm-0" type="button" onClick={() => router.push(register())}>Register</button>
         </React.Fragment>
         );
 
-    const UserInfo = () => (
+    const UserInfoPC = () => (
         <React.Fragment>
-            <span className="mr-3">Welcome someone@gmail</span>
+            <span className="mr-3">{`Welcome ${user.email}`}</span>
             <button className="btn btn-outline-success my-2 my-sm-0 mr-3" type="button" onClick={() => router.push(myMovies())}>Share a movie</button>
             <button className="btn btn-outline-success my-2 my-sm-0 mr-3" type="button" onClick={() => router.push(share())}>My movies</button>
-            <button className="btn btn-danger my-2 my-sm-0" type="button">Logout</button>
+            <button className="btn btn-danger my-2 my-sm-0" type="button" onClick={logout}>Logout</button>
         </React.Fragment>
     );
 
+    const LoginInfoMobile = () => (
+        <DropdownMenu right>
+            <DropdownItem header>Header</DropdownItem>
+            <DropdownItem text><input className="form-control mr-sm-2" type="email" placeholder="Email" disabled={isPending} ref={emailRef} /></DropdownItem>
+            <DropdownItem text><input className="form-control mr-sm-2" type="password" placeholder="Password" disabled={isPending} ref={passwordRef} /></DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem text><button className="btn btn-outline-success btn-block" type="button" onClick={submit}>Login</button></DropdownItem>
+            <DropdownItem text><button className="btn btn-outline-primary btn-block" type="button" onClick={() => router.push(register())}>Register</button></DropdownItem>
+        </DropdownMenu>
+        );
+
+    const UserInfoMobile = () => (
+        <DropdownMenu right>
+            <DropdownItem header>Welcome</DropdownItem>
+            <DropdownItem text>{user.email}</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem text><button className="btn btn-outline-success btn-block" type="button" onClick={() => router.push(myMovies())}>Share a movie</button></DropdownItem>
+            <DropdownItem text><button className="btn btn-outline-success btn-block" type="button" onClick={() => router.push(share())}>My movies</button></DropdownItem>
+            <DropdownItem text><button className="btn btn-danger btn-block" type="button" onClick={logout}>Logout</button></DropdownItem>
+        </DropdownMenu>
+    );
+
     return (
-        <Header className="header">
+        <header className="header">
+            <ReactNotification />
             <section className="header__container m-5">
                 <div className="title">
                     <LogoSvg />
                     <span className="title--name font-weight-bold h1 p-4">Funny Movies</span>
                 </div>
-                <div className="user-info">
-                    {/* <LoginInfo /> */}
-                    <UserInfo />
+                <div className="user-info header-mobile">
+                    <Dropdown isOpen={show} toggle={() => setShow(!show)} color="primary">
+                        <DropdownToggle caret>
+                            Menu
+                        </DropdownToggle>
+                        {user.isLogin ? <UserInfoMobile /> : <LoginInfoMobile />}
+                    </Dropdown>
+                </div>
+                <div className="user-info header-pc">
+                    {user.isLogin ? <UserInfoPC /> : <LoginInfoPC />}
                 </div>
             </section>
-        </Header>
+        </header>
     );
 };
