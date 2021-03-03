@@ -30,7 +30,7 @@
       "**/*.ts",
       "**/*.tsx",
       "src/custom.d.ts"
-    ],
+  , "router.js"    ],
     "exclude": [
       "node_modules"
     ]
