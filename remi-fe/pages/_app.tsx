@@ -2,9 +2,7 @@
 import React, { ComponentType } from 'react';
 import AppBase, { AppContext, AppProps } from 'next/app';
 import { NextComponentType, NextPageContext } from 'next';
-import { useStore } from 'react-redux';
-import Head from 'next/head';
-import { load, save, wrapper } from '~/store/store';
+import { wrapper } from '~/store/store';
 // import { AppDispatch } from '~/store/types';
 import Layout from '~/components/layout';
 
@@ -35,20 +33,9 @@ function App(props: Props) {
 
 App.getInitialProps = async (context: AppContext) => {
   // const dispatch = context.ctx.store.dispatch as AppDispatch;
+
+  // dispatch(() => null);
   console.log();
-
-  // await dispatch(optionsSetAll({
-  //     desktopHeaderVariant: config.desktopHeaderVariant,
-  //     mobileHeaderVariant: config.mobileHeaderVariant,
-  // }));
-
-  // let language;
-
-  // if (typeof context.ctx.query.lang === 'string') {
-  //     language = getLanguageByLocale(context.ctx.query.lang);
-  // } else {
-  //     language = getLanguageByPath(context.ctx.asPath || context.ctx.pathname);
-  // }
 
   return {
       ...(await AppBase.getInitialProps(context)),
@@ -58,7 +45,4 @@ App.getInitialProps = async (context: AppContext) => {
 
 const WrappedApp = wrapper.withRedux(App);
 
-// noinspection JSUnusedGlobalSymbols
 export default WrappedApp;
-
-// export default MyApp;

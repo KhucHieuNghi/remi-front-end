@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 export const Connect = () => {
-  mongoose.connect('mongodb+srv://@master.1na2r.mongodb.net/remi?retryWrites=true&w=majority');
+  // mongoose.connect('mongodb+srv://@master.1na2r.mongodb.net/remi?retryWrites=true&w=majority');
 
   const db = mongoose.connection;
 

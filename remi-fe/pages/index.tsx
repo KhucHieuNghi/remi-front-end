@@ -8,14 +8,10 @@ const Wrapper = styled.section`
     }
 `;
 
-export default () => {
-    console.log();
+export default () => (
+    <Wrapper>
+        <ShareMovie />
+        <ShareMovie />
 
-    return (
-        <Wrapper>
-            <ShareMovie />
-            <ShareMovie />
-
-        </Wrapper>
+    </Wrapper>
     );
-};
