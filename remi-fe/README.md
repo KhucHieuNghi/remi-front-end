@@ -5,6 +5,8 @@ yarn
 yarn dev
 
 
+
+---------- structure folder
 api -- side effect
 
 store -- middleware (modal thunk, saga)
@@ -29,6 +31,7 @@ locate -- intl
 
 url -- contain href
 
+----------------
 
 will 
     - add docker
